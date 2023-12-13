@@ -308,7 +308,6 @@ const dataBase: CityDatabase = {
 };
 dataBase.Odesa = 99999999;
 
-
 // interface
 
 // interface Person {
@@ -363,40 +362,150 @@ dataBase.Odesa = 99999999;
 
 // Задача 1: Уявімо, що у вас є форма редагування профілю користувача.
 // Користувач може вибирати, які поля він хоче оновити.Створіть тип для такої форми на основі існуючого типу User.
+type myUser = {
+	name: string;
+	age: number;
+	hobby: string;
+};
+
+type myUserUpdate = Partial<myUser>;
+
+const userNew: myUserUpdate = {
+	age: 67,
+	hobby: 'reading',
+};
 
 //   Задача 2: У вас є конфігураційний об'єкт з декількома полями.
 // Створіть функцію, яка приймає часткові налаштування та повертає повний конфігураційний об'єкт.
+
+type myUser1 = {
+	name: string;
+	age: number;
+	hobby: string;
+};
+
+function updateUser(obj: myUser1, field: Partial<myUser>) {
+	return { ...obj, ...field };
+}
+const result = updateUser({ name: 'Ira', age: 23, hobby: 'guitar' }, { age: 87, hobby: 'none' });
+console.log(result);
 
 // Readonly<T>
 
 // Задача 1: Ви розробляєте функцію, яка приймає масив чисел і повертає його ж,
 //   але ви хочете гарантувати, що функція не змінює вхідний масив.
 
+type MyReadonlyArr = number[];
+
+function readOnlyArr(arr: Readonly<MyReadonlyArr>) {
+	// return arr.map(num => num + 1) // творюэ новий масив, працюэ
+	return arr;
+}
+
+console.log(readOnlyArr([3, 4, 5, 6]));
+
 // Задача 2: Створіть об'єкт конфігурації, який не можна змінювати після його створення.
+
+type myUser2 = {
+	name: string;
+	age: number;
+	hobby: string;
+	email: string;
+	password: string;
+	date: Date;
+};
+
+type readonlyUser = Readonly<myUser2>;
 
 // 3. Pick<T, K>
 
 // Задача 1: У вас є об'єкт користувача і вам потрібно створити функцію, яка повертає лише ім'я та електронну пошту користувача.
+function pickedUser(obj: Pick<myUser2, 'name' | 'email'>) {
+	return obj;
+}
+console.log(
+	pickedUser({
+		name: 'ira',
+		email: 'qwe@qwe.com',
+	})
+);
+
 // Задача 2: Ви хочете зберегти тільки певні поля з API-відповіді для відображення в UI.
+
+type Date = Pick<myUser2, 'age' | 'name'>;
 
 // 4. Record<K, T>
 
 // Задача 1: Ви хочете створити об'єкт, який мапить імена користувачів до їх віку.
+type Users = Record<string, number>;
+const users: Users = {
+	Max: 45,
+	Ira: 23,
+	Anton: 18,
+};
+
 // Задача 2: Мапа з іменами місяців до кількості днів у них.
+
+type Calendar = Record<string, number>;
+const calendar: Calendar = {
+	December: 31,
+	January: 31,
+	February: 28 | 29,
+	March: 31,
+};
 
 // 5. Omit<T, K>
 
 // Задача 1: У вас є тип користувача, але ви хочете створити новий тип без поля пароля для відправлення даних на клієнтську сторону.
+type omitUser = Omit<myUser2, 'password'>;
 //Задача 2: Ви хочете створити новий тип на основі API-відповіді, але без дати створення.
-
+type omitUserDate = Omit<myUser2, 'date'>;
 // Робота з інтерфейсами
 
 // Спроєктуйте інтерфейс для ресторанного меню.
 // Він повинен містити поля: назва, ціна, категорія(наприклад, закуска, основна страва, десерт).
 // Розробіть функцію, яка приймає список страв і фільтрує їх за категорією.
 
+interface RestaurantMenu {
+	title: string;
+	price: number;
+	category: 'appetizer' | 'mainCourse' | 'dessert';
+}
+
+const restaurantMenu: RestaurantMenu[] = [
+	{ title: 'Caesar Salad', price: 12.99, category: 'appetizer' },
+	{ title: 'Spaghetti Bolognese', price: 16.99, category: 'mainCourse' },
+	{ title: 'Cheesecake', price: 8.99, category: 'dessert' },
+];
+
+function filteredMenu(menu: RestaurantMenu[], category: 'appetizer' | 'mainCourse' | 'dessert') {
+	return menu.filter(item => item.category === category);
+}
+
+console.log(filteredMenu(restaurantMenu, 'dessert'));
+
 // Спроєктуйте інтерфейс для користувача з полями ім'я, email та дата народження.
 // Після цього створіть функцію, яка перевіряє, чи є користувач повнолітнім.
+interface UserAgain {
+	name: string;
+	email: string;
+	birthDate: { year: number; month: number; date: number };
+}
+
+function checkAge(obj: UserAgain) {
+	const currentDate = new Date();
+	const userBirthDate = obj.birthDate;
+
+	if (currentDate.getFullYear() - userBirthDate.year < 18) {
+		console.log('User is not adult.');
+		return false;
+	}
+
+	console.log('User is adult.');
+	return true;
+}
+
+checkAge({ name: 'qwe', email: 'qwerty#qwe.com', birthDate: { year: 2007, month: 4, date: 18 } });
 
 // Робота з класами
 

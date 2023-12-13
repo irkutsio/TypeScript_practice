@@ -139,69 +139,60 @@ const dataBase = {
     Kherson: 8765474,
 };
 dataBase.Odesa = 99999999;
-// interface
-// interface Person {
-//   firstName: string;
-//   lastName: string;
-//   getFullName(): string;
-// }
-// const john: Person = {
-//   firstName: "John",
-//   lastName: "Doe",
-//   getFullName() {
-//     return `${this.firstName} ${this.lastName}`;
-//   },
-// };
-// interface Movable {
-//   speed: number;
-//   move(): void;
-// }
-// class Car implements Movable {
-//   speed: number;
-//   constructor(speed: number) {
-//     this.speed = speed;
-//   }
-//   move() {
-//     console.log(`Car is moving at ${this.speed} km/h.`);
-//   }
-// }
-// interface Example {
-//   mandatoryProp: string;
-//   optionalProp?: string;
-// }
-// interface Example {
-//   readonly fixedProp: string;
-// }
-// interface Parent {
-//   prop1: string;
-// }
-// interface Child extends Parent {
-//   prop2: string;
-// }
-// Partial<T>
-// Задача 1: Уявімо, що у вас є форма редагування профілю користувача.
-// Користувач може вибирати, які поля він хоче оновити.Створіть тип для такої форми на основі існуючого типу User.
-//   Задача 2: У вас є конфігураційний об'єкт з декількома полями.
-// Створіть функцію, яка приймає часткові налаштування та повертає повний конфігураційний об'єкт.
-// Readonly<T>
-// Задача 1: Ви розробляєте функцію, яка приймає масив чисел і повертає його ж,
-//   але ви хочете гарантувати, що функція не змінює вхідний масив.
-// Задача 2: Створіть об'єкт конфігурації, який не можна змінювати після його створення.
+const userNew = {
+    age: 67,
+    hobby: 'reading',
+};
+function updateUser(obj, field) {
+    return { ...obj, ...field };
+}
+const result = updateUser({ name: 'Ira', age: 23, hobby: 'guitar' }, { age: 87, hobby: 'none' });
+console.log(result);
+function readOnlyArr(arr) {
+    // return arr.map(num => num + 1) // творюэ новий масив, працюэ
+    return arr;
+}
+console.log(readOnlyArr([3, 4, 5, 6]));
 // 3. Pick<T, K>
 // Задача 1: У вас є об'єкт користувача і вам потрібно створити функцію, яка повертає лише ім'я та електронну пошту користувача.
-// Задача 2: Ви хочете зберегти тільки певні поля з API-відповіді для відображення в UI.
-// 4. Record<K, T>
-// Задача 1: Ви хочете створити об'єкт, який мапить імена користувачів до їх віку.
-// Задача 2: Мапа з іменами місяців до кількості днів у них.
-// 5. Omit<T, K>
-// Задача 1: У вас є тип користувача, але ви хочете створити новий тип без поля пароля для відправлення даних на клієнтську сторону.
-//Задача 2: Ви хочете створити новий тип на основі API-відповіді, але без дати створення.
-// Робота з інтерфейсами
-// Спроєктуйте інтерфейс для ресторанного меню.
-// Він повинен містити поля: назва, ціна, категорія(наприклад, закуска, основна страва, десерт).
-// Розробіть функцію, яка приймає список страв і фільтрує їх за категорією.
-// Спроєктуйте інтерфейс для користувача з полями ім'я, email та дата народження.
-// Після цього створіть функцію, яка перевіряє, чи є користувач повнолітнім.
+function pickedUser(obj) {
+    return obj;
+}
+console.log(pickedUser({
+    name: 'ira',
+    email: 'qwe@qwe.com',
+}));
+const users = {
+    Max: 45,
+    Ira: 23,
+    Anton: 18,
+};
+const calendar = {
+    December: 31,
+    January: 31,
+    February: 28 | 29,
+    March: 31,
+};
+const restaurantMenu = [
+    { title: 'Caesar Salad', price: 12.99, category: 'appetizer' },
+    { title: 'Spaghetti Bolognese', price: 16.99, category: 'mainCourse' },
+    { title: 'Cheesecake', price: 8.99, category: 'dessert' },
+];
+function filteredMenu(menu, category) {
+    return menu.filter(item => item.category === category);
+}
+console.log(filteredMenu(restaurantMenu, 'dessert'));
+function checkAge(obj) {
+    const currentDate = new Date();
+    const userBirthDate = obj.birthDate;
+    if (currentDate.getFullYear() - userBirthDate.year < 18) {
+        console.log('User is not adult.');
+        return false;
+    }
+    console.log('User is adult.');
+    return true;
+}
+checkAge({ name: 'qwe', email: 'qwerty#qwe.com', birthDate: { year: 2007, month: 4, date: 18 } });
 // Робота з класами
 // Спроєктуйте інтерфейс CarProperties з такими характеристиками, як brand, year та fuelType.
 // Створіть клас Car, який реалізує цей інтерфейс і має метод getDetails(), що виводить інформацію про автомобіль.
